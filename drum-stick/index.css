@@ -1,0 +1,41 @@
+body {
+  background-color: #a87e3a
+}
+
+.container {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
+
+.box {
+  transition: all .07s ease;
+  display: inline-block;
+  text-align: center;
+  padding-top: 4em;
+  width: 2em;
+  margin: 0.2em;
+  background: linear-gradient(to bottom, #300000, black);
+  border-radius: 0.3em;
+  box-shadow: 0 10px 10px black
+}
+
+kbd {
+  font-size: 1.5em;
+  color: antiquewhite
+}
+
+.box small {
+  font-size: 0.7em;
+  margin-top: 1em;
+  display: block;
+  position: absolute;
+}
+
+.playing {
+  transform: scale(1.1);
+  border: black;
+  box-shadow: 0 1rem 1rem black;
+}
