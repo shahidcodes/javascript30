@@ -24,7 +24,8 @@ body {
 
 kbd {
   font-size: 1.5em;
-  color: antiquewhite
+  color: antiquewhite;
+  user-select: none;
 }
 
 .box small {
@@ -32,6 +33,7 @@ kbd {
   margin-top: 1em;
   display: block;
   position: absolute;
+  user-select: none;
 }
 
 .playing {
