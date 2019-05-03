@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Fira+Sans"
+      rel="stylesheet"
+    />
+    <title>CSS Variables - JS30</title>
+    <style>
+      :root {
+        --position-top: 18%;
+        --position-left: 35%;
+        --text-size: 1.2em;
+      }
+      * {
+        font-family: "Fira Sans", sans-serif;
+      }
+      h1 {
+        text-align: center;
+      }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+      }
+      .viewing-area {
+        text-align: center;
+        position: relative;
+      }
+      #text-on-tshirt {
+        top: var(--position-top);
+        left: var(--position-left);
+        position: absolute;
+        font-size: var(--text-size);
+      }
+      .controls {
+        margin: 0.5em;
+      }
+      #text-input {
+        border: 4px solid #eee;
+        border-radius: 0.4em;
+        padding: 0.5em;
+      }
+      .position-btns {
+        margin: 0.5em;
+      }
+      .pos-btn {
+        border: none;
+        padding: 1em;
+      }
+      .controls label {
+        display: inline-block;
+        width: 7em;
+        text-align: right;
+        margin-right: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Text On T-Shirt</h1>
+    <div class="container">
+      <div class="controls">
+        <div class="controls">
+          <label for="text-input">Text</label>
+          <input
+            id="text-input"
+            type="text"
+            value="@shahidcodes"
+            placeholder="write what you want?"
+          />
+        </div>
+        <div class="controls">
+          <label for="fontSize">Text Size</label>
+          <input
+            type="range"
+            id="fontSize"
+            value="12"
+            placeholder="Text size"
+            min="10"
+            max="20"
+          />
+        </div>
+        <div class="position-btns controls">
+          <label>Text Position</label>
+          <button data-direction="left" class="pos-btn">←</button>
+          <button data-direction="up" class="pos-btn">↑</button>
+          <button data-direction="right" class="pos-btn">→</button>
+          <button data-direction="down" class="pos-btn">↓</button>
+        </div>
+      </div>
+      <div class="viewing-area">
+        <p id="text-on-tshirt">@shahidcodes</p>
+        <img height="400px" src="images/t-shirt.jpg" alt="t-shirt" />
+      </div>
+      <div class="values">
+        <p>--position-top: <span id="value-of-top"></span></p>
+        <p>--position-left: <span id="value-of-left"></span></p>
+        <p>--text-size: <span id="value-of-size"></span></p>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    let perStep = 1;
+    let root = document.documentElement;
+    let textInput = document.getElementById("text-input");
+    let textOnTshirt = document.getElementById("text-on-tshirt");
+    let valueOfTop = document.getElementById("value-of-top");
+    let valueOfLeft = document.getElementById("value-of-left");
+    let valueOfSize = document.getElementById("value-of-size");
+    let defaultValues = {
+      "--position-top": 18,
+      "--position-left": 35,
+      "--text-size": 1.2
+    };
+    textInput.addEventListener("input", e => {
+      textOnTshirt.innerText = e.target.value;
+    });
+    document.querySelectorAll(".pos-btn").forEach(item => {
+      item.addEventListener("click", e => {
+        console.log(item.dataset);
+        let dir = item.dataset.direction;
+
+        if (dir === "up") {
+          changeVariable("--position-top", "decrease", 10);
+        } else if (dir == "down") {
+          changeVariable("--position-top", "increase", 70);
+        } else if (dir == "left") {
+          changeVariable("--position-left", "decrease", 25);
+        } else if (dir == "right") {
+          changeVariable("--position-left", "increase", 55);
+        }
+        showVariableValue();
+      });
+    });
+    var decrease = (a, b) => parseInt(a) - parseInt(b);
+    var increase = (a, b) => parseInt(a) + parseInt(b);
+    function changeVariable(variableName, operation, boundary) {
+      let topPos = root.style.getPropertyValue(variableName);
+      let propValue;
+      if (topPos == "") {
+        propValue = `${window[operation](
+          defaultValues[variableName],
+          perStep
+        )}%`;
+      } else {
+        let currentValue = topPos.slice(0, -1);
+        if (currentValue <= boundary && operation == "decrease") return;
+        if (currentValue >= boundary && operation == "increase") return;
+        propValue = `${window[operation](currentValue, perStep)}%`;
+      }
+      console.log({ propValue });
+      root.style.setProperty(variableName, propValue);
+    }
+
+    document.getElementById("fontSize").addEventListener("input", e => {
+      root.style.setProperty(
+        "--text-size",
+        `${parseFloat(e.target.value) / 10}em`
+      );
+      showVariableValue();
+    });
+
+    function showVariableValue() {
+      let topPos = root.style.getPropertyValue("--position-top");
+      let leftPos = root.style.getPropertyValue("--position-left");
+      let textSize = root.style.getPropertyValue("--text-size");
+
+      valueOfLeft.innerText = leftPos || defaultValues["--position-left"];
+      valueOfTop.innerText = topPos || defaultValues["--position-top"];
+      valueOfSize.innerText = textSize || defaultValues["--text-size"];
+    }
+    showVariableValue();
+  </script>
+</html>
