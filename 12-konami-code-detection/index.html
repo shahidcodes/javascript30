@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Pathway+Gothic+One"
+      rel="stylesheet"
+    />
+
+    <script src="https://www.cornify.com/js/cornify.js"></script>
+    <title>Konami Code</title>
+    <style>
+      body {
+        font-family: "Pathway Gothic One", sans-serif;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 90vh;
+        background-color: black;
+        color: #1ec503;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Type the secret code</p>
+  </body>
+  <script>
+    let secretCode = "shahid";
+    let pressedKeys = [];
+    window.addEventListener("keyup", e => {
+      pressedKeys.push(e.key);
+      pressedKeys.splice(
+        -secretCode.length - 1,
+        pressedKeys.length - secretCode.length
+      );
+      if (pressedKeys.join("").includes(secretCode)) {
+        cornify_add();
+      }
+    });
+  </script>
+</html>
