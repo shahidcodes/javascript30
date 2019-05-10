@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Custom Video Player</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="video">
+        <video src="bunny.mp4" class="video_player"></video>
+
+        <div class="controls">
+          <div class="progress">
+            <div class="progress_bar"></div>
+          </div>
+          <button class="player__btn play_btn">►</button>
+          <input
+            type="range"
+            name="volume"
+            min="0"
+            max="1"
+            step="0.1"
+            value="1"
+            class="slider volume"
+          />
+          <input
+            type="range"
+            name="playbackRate"
+            min="0.5"
+            max="2"
+            step="0.1"
+            value="1"
+            class="slider playbackRate"
+          />
+          <button class="player__btn skip_btn" data-skip="-10">« 10s</button>
+          <button class="player__btn skip_btn" data-skip="25">25s »</button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>

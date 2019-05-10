@@ -1,0 +1,86 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background: #7A419B;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #7c1599 0%, #921099 48%, #7e4ae8 100%);
+  background-size: cover;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.video {
+  position: relative;
+}
+
+.video:hover .controls {
+  opacity: 1;
+}
+
+.controls {
+  height: 3em;
+  width: 100%;
+  display: flex;
+  opacity: 0;
+  justify-content: space-between;
+  background-color: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  position: absolute;
+  flex-wrap: wrap;
+  margin-bottom: 2.5px;
+  transition: all .3s ease .15s;
+}
+
+.slider {
+  flex: 1;
+}
+
+.skip_btn {
+  flex: 0.2
+}
+
+button:active, button:focus {
+  outline: none;
+}
+
+.player__btn {
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1em;
+  height: 3em;
+  width: 3em;
+}
+
+.progress {
+  background-color: #EEE;
+  width: 100%;
+  height: 0.4em;
+  display: flex;
+  cursor: pointer;
+}
+
+.progress_bar {
+  background-color: black;
+  flex-grow: 0;
+}
