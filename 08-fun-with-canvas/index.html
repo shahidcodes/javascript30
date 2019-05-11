@@ -9,12 +9,16 @@
       html,
       body {
         margin: 0;
+        overscroll-behavior: none;
       }
       #download {
         position: absolute;
         background-color: #eee;
         padding: 0.5em;
         text-decoration: none;
+      }
+      canvas {
+        display: block;
       }
     </style>
   </head>
@@ -26,7 +30,8 @@
       const ctx = canvas.getContext("2d");
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.lineWidth = 60;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
@@ -41,11 +46,13 @@
       function draw(e) {
         if (!isDrawing) return;
         ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        let offsetX = e.changedTouches ? e.changedTouches[0].pageX : e.offsetX;
+        let offsetY = e.changedTouches ? e.changedTouches[0].pageY : e.offsetY;
         ctx.beginPath();
         ctx.moveTo(lastX, lastY);
-        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.lineTo(offsetX, offsetY);
         ctx.stroke();
-        [lastX, lastY] = [e.offsetX, e.offsetY];
+        [lastX, lastY] = [offsetX, offsetY];
         hue++;
 
         if (ctx.lineWidth > 100 || ctx.lineWidth <= 1) {
@@ -57,15 +64,44 @@
         } else ctx.lineWidth--;
       }
 
-      window.addEventListener("mousemove", draw);
-      window.addEventListener("mousedown", e => {
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mousedown", e => {
         isDrawing = true;
         [lastX, lastY] = [e.offsetX, e.offsetY];
       });
-      window.addEventListener("mouseup", () => {
+      canvas.addEventListener("mouseup", () => {
         isDrawing = false;
       });
-      window.addEventListener("mouseout", () => {
+      canvas.addEventListener("mouseout", () => {
+        isDrawing = false;
+      });
+
+      canvas.addEventListener(
+        "touchmove",
+        e => {
+          draw(e);
+        },
+        false
+      );
+      canvas.addEventListener(
+        "touchstart",
+        e => {
+          isDrawing = true;
+          let offsetX = e.changedTouches
+            ? e.changedTouches[0].pageX
+            : e.offsetX;
+          let offsetY = e.changedTouches
+            ? e.changedTouches[0].pageY
+            : e.offsetY;
+          [lastX, lastY] = [offsetX, offsetY];
+        },
+        false
+      );
+
+      canvas.addEventListener("touchend", () => {
+        isDrawing = false;
+      });
+      canvas.addEventListener("touchcancel", () => {
         isDrawing = false;
       });
 
