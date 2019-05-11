@@ -27,6 +27,12 @@
         justify-content: center;
         flex-direction: row;
       }
+      @media screen and (max-width: 600px) {
+        .container {
+          flex-direction: column;
+        }
+      }
+
       .viewing-area {
         text-align: center;
         position: relative;
@@ -63,7 +69,7 @@
   <body>
     <h1>Text On T-Shirt</h1>
     <div class="container">
-      <div class="controls">
+      <div class="controls-container col">
         <div class="controls">
           <label for="text-input">Text</label>
           <input
@@ -92,11 +98,11 @@
           <button data-direction="down" class="pos-btn">↓</button>
         </div>
       </div>
-      <div class="viewing-area">
+      <div class="viewing-area col">
         <p id="text-on-tshirt">@shahidcodes</p>
         <img height="400px" src="images/t-shirt.jpg" alt="t-shirt" />
       </div>
-      <div class="values">
+      <div class="values col">
         <p>--position-top: <span id="value-of-top"></span></p>
         <p>--position-left: <span id="value-of-left"></span></p>
         <p>--text-size: <span id="value-of-size"></span></p>
