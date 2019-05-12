@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=PT+Sans"
+      rel="stylesheet"
+    />
+    <title>TODO List</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <form class="form">
+        <input
+          type="text"
+          name="todoText"
+          placeholder="Type anything.."
+          autocomplete="off"
+        />
+      </form>
+      <div class="todos">
+        <ul class="todo-ul">
+          <li class="todo-item done">Implement all features</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <script>
+    const form = document.querySelector(".form");
+    const todoList = document.querySelector(".todo-ul");
+    function getRandomBgClasses() {
+      let colorClasses = ["candy-red", "gunmetal", "rufous", "purple-plum"];
+      return colorClasses[Math.floor(Math.random() * colorClasses.length)];
+    }
+    function saveToStorage(items) {
+      localStorage.setItem("todos", JSON.stringify(items));
+    }
+
+    function fetchFromStorage() {
+      let data = localStorage.getItem("todos");
+      return data ? JSON.parse(data).reverse() : [];
+    }
+
+    let items = fetchFromStorage();
+
+    function populateList(items = [], elements) {
+      elements.innerHTML = items
+        .map(item => {
+          return `
+          <li class="todo-item ${getRandomBgClasses()}">${item.text}</li>
+        `;
+        })
+        .join("");
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      let text = this.elements.todoText.value;
+      if (text == "") return;
+      items.unshift({
+        text,
+        done: false
+      });
+      populateList(items, todoList);
+      this.reset();
+      saveToStorage(items);
+    }
+
+    form.addEventListener("submit", handleSubmit);
+    populateList(items, todoList);
+  </script>
+</html>
