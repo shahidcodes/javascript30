@@ -8,49 +8,91 @@
       href="https://fonts.googleapis.com/css?family=PT+Sans"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <title>TODO List</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="container">
-      <form class="form">
-        <input
-          type="text"
-          name="todoText"
-          placeholder="Type anything.."
-          autocomplete="off"
-        />
-      </form>
-      <div class="todos">
-        <ul class="todo-ul">
-          <li class="todo-item done">Implement all features</li>
+      <div class="sidebar">
+        <div id="header">
+          <span>
+            <img
+              src="https://api.adorable.io/avatars/51/shahidcodes"
+              id="header-img"
+            />
+          </span>
+          <h4 id="header-text">Shahid Kamal</h4>
+          <div id="expand-icon" hidden>
+            <i class="material-icons">expand_more</i>
+          </div>
+        </div>
+        <ul id="todo-list">
+          <li data-name="TODOs" class="active">TODOs</li>
+          <li data-name="Family" class="">Family</li>
         </ul>
+        <ul id="list-action">
+          <li id="add-new-list">
+            <span> <i class="material-icons">add</i>Add new list </span>
+          </li>
+          <li id="list-action-input" hidden>
+            <input type="text" id="tagName" />
+            <i id="list-add-icon" class="material-icons">add</i>
+          </li>
+        </ul>
+      </div>
+      <div class="todo-area">
+        <form class="form">
+          <input
+            type="text"
+            name="todoText"
+            placeholder="Type anything.."
+            autocomplete="off"
+          />
+        </form>
+        <div class="todos">
+          <ul class="todo-ul">
+            <li class="todo-item done">Implement all features</li>
+          </ul>
+        </div>
       </div>
     </div>
   </body>
   <script>
+    const KEY_TAG_LIST = "--app-tags-list--";
     const form = document.querySelector(".form");
     const todoList = document.querySelector(".todo-ul");
+    const todoTagList = document.getElementById("todo-list");
+    let activeTag = "TODOs";
     function getRandomBgClasses() {
       let colorClasses = ["candy-red", "gunmetal", "rufous", "purple-plum"];
       return colorClasses[Math.floor(Math.random() * colorClasses.length)];
     }
-    function saveToStorage(items) {
-      localStorage.setItem("todos", JSON.stringify(items));
+    function saveToStorage(items, key = activeTag) {
+      localStorage.setItem(key, JSON.stringify(items));
     }
 
-    function fetchFromStorage() {
-      let data = localStorage.getItem("todos");
-      return data ? JSON.parse(data).reverse() : [];
+    function fetchFromStorage(key) {
+      let data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : [];
     }
 
-    let items = fetchFromStorage();
+    let items = fetchFromStorage(activeTag);
+    let listTags = new Set(fetchFromStorage(KEY_TAG_LIST));
 
     function populateList(items = [], elements) {
       elements.innerHTML = items
-        .map(item => {
+        .map((item, i) => {
           return `
-          <li class="todo-item ${getRandomBgClasses()}">${item.text}</li>
+          <li data-index="${i}" class="todo-item ${getRandomBgClasses()} 
+          ${item.done ? "done" : ""}">${item.text}
+            <span class="todo-item__delete">
+              <i data-index="${i}" class="material-icons">delete</i>
+            </span>
+          </li>
         `;
         })
         .join("");
@@ -69,7 +111,90 @@
       saveToStorage(items);
     }
 
+    function handleItemClick(e) {
+      let isTodoItem = e.target.classList.contains("todo-item");
+      let isDeleteBtn = e.target.classList.contains("material-icons");
+      if (isTodoItem) {
+        e.target.classList.toggle("done");
+        let { index } = e.target.dataset;
+        items[index].done = !items[index].done;
+        saveToStorage(items, activeTag);
+      } else if (isDeleteBtn) {
+        let { index } = e.target.dataset;
+        items.splice(index, 1);
+        saveToStorage(items, activeTag);
+        populateList(items, todoList);
+      }
+    }
+
     form.addEventListener("submit", handleSubmit);
+    todoList.addEventListener("click", handleItemClick);
     populateList(items, todoList);
+
+    // click on todo list
+
+    document.querySelectorAll("#todo-list").forEach(tag => {
+      tag.addEventListener("click", e => {
+        if (e.target.localName != "li") return;
+        if (activeTag === e.target.dataset.name) return;
+        activeTag = e.target.dataset.name;
+        document
+          .querySelector("#todo-list li.active")
+          .classList.remove("active");
+        e.target.classList.add("active");
+        items = fetchFromStorage(activeTag);
+        populateList(items, todoList);
+      });
+    });
+
+    function populateTagList(tagLists, element) {
+      element.innerHTML = tagLists
+        .map((item, index) => {
+          return `
+            <li data-name="${item}" class="${
+            index == 0 ? "active" : ""
+          }">${item}</li>
+          `;
+        })
+        .join("");
+    }
+    populateTagList([...listTags], todoTagList);
+
+    function handleListAdd(value) {
+      if (value === "") return;
+      listTags.add(value);
+      saveToStorage([...listTags], KEY_TAG_LIST);
+      populateTagList([...listTags], todoTagList);
+    }
+
+    let addNewListInput = document.getElementById("tagName");
+    addNewListInput.addEventListener("keyup", e => {
+      if (e.keyCode === 13) {
+        handleListAdd(e.target.value);
+        addNewListInput.parentElement.hidden = true;
+        actionNewList.hidden = false;
+      }
+    });
+
+    const mListAddIcon = document.getElementById("list-add-icon");
+    mListAddIcon.addEventListener("click", e => {
+      handleListAdd(addNewListInput.value);
+      addNewListInput.parentElement.hidden = true;
+      actionNewList.hidden = false;
+    });
+
+    let actionNewList = document.getElementById("add-new-list");
+    actionNewList.addEventListener("click", function(e) {
+      this.hidden = true;
+      addNewListInput.parentElement.hidden = false;
+    });
+
+    let allSidebarUl = document.querySelectorAll(".sidebar ul");
+    document.getElementById("expand-icon").addEventListener("click", e => {
+      allSidebarUl.forEach(ul => {
+        console.log(ul);
+        ul.classList.toggle("ul-visible");
+      });
+    });
   </script>
 </html>

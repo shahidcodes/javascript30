@@ -1,5 +1,5 @@
 * {
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
 }
 
 body {
@@ -7,47 +7,112 @@ body {
   margin: 0;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  background: url("https://images.unsplash.com/photo-1522199670076-2852f80289c3");
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: blur(2px);
-  z-index: -100;
-}
-
 .container {
   display: flex;
-  align-items: center;
   height: 90vh;
-  flex-direction: column;
+  flex-direction: row;
+}
+
+.container > * {
+  /* border: 1px solid red; */
+  margin: 1em;
+}
+
+.sidebar {
+  flex: 1;
+  border-right: 1px solid #eee;
+}
+#header {
+  padding: 1em;
+  border-bottom: 1px solid #eee;
+}
+#header-text {
+  font-size: 1.5em;
+  text-align: center;
+  display: inline;
+  vertical-align: middle;
+  /* text-shadow: 1px 0px 0px black; */
+}
+
+#header-img {
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+#todo-list {
+  list-style-type: none;
+  color: #fff;
+}
+
+#todo-list li {
+  cursor: pointer;
+  height: 1em;
+  padding: 1em;
+  background: #eee;
+  margin-top: 0.5em;
+  color: #2b2d42;
+  border-top-left-radius: 3em;
+  border-bottom-left-radius: 3em;
+}
+#todo-list li.active {
+  color: #fff;
+  background-color: rgb(82, 139, 120);
+}
+#list-action {
+  list-style-type: none;
+}
+
+#list-action li {
+  cursor: pointer;
+}
+#list-action li span {
+  height: 24px;
+}
+#list-action li i,
+span {
+  vertical-align: middle;
+}
+#list-action-input {
+  width: 100%;
+}
+#tagName {
+  border: none;
+  outline: 0;
+  width: 80%;
+  border-bottom: 1px solid black;
+  padding-bottom: 1em;
+}
+#list-action-input i {
+  width: 10%;
+  vertical-align: baseline;
+}
+
+.todo-area {
+  flex: 3;
 }
 
 .candy-red {
-  background-color: #D90429;
+  background-color: #d90429;
 }
 
 .gunmetal {
-  background-color: #2B2D42;
+  background-color: #2b2d42;
 }
 
 .rufous {
-  background-color: #A3320B;
+  background-color: #a3320b;
 }
 
 .purple-plum {
-  background-color: #9D44B5;
+  background-color: #9d44b5;
 }
 
 .form {
   margin-top: 1em;
 }
 
-.form, .todos {
+.form,
+.todos {
   width: 50%;
 }
 
@@ -60,7 +125,7 @@ body::before {
 .todo-item {
   list-style-type: none;
   padding: 1em;
-  color: #FFF;
+  color: #fff;
   border-radius: 3em;
   margin-bottom: 0.5em;
   cursor: pointer;
@@ -73,10 +138,10 @@ body::before {
   text-decoration: line-through;
 }
 
-.form>input[name='todoText'] {
-  width: 95%;
+.form > input[name="todoText"] {
+  width: 90%;
   padding: 1em;
-  border: 3px solid #EEE;
+  border: 3px solid #eee;
   border-radius: 3em;
   outline: 0;
   -webkit-box-shadow: 0px 0px 5px 0px rgba(133, 133, 133, 1);
@@ -84,11 +149,48 @@ body::before {
   box-shadow: 0px 0px 5px 0px rgba(133, 133, 133, 1);
 }
 
-.form>input[type='submit'] {
-  padding: 1em;
-  border-radius: 50%;
-  border: 1px solid #eee;
-  background-color: #eee;
-  cursor: pointer;
-  outline: 0
+.todo-item__delete {
+  float: right;
+  margin-right: 1em;
+}
+
+.ul-visible {
+  display: block !important;
+  opacity: 1 !important;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    flex-direction: column;
+  }
+  .sidebar {
+    border-right: 0px;
+  }
+  .sidebar,
+  .todo-area {
+    flex: 1;
+  }
+
+  .sidebar ul {
+    display: none;
+    opacity: 0;
+    transition: all 1s linear;
+  }
+
+  #expand-icon {
+    display: block;
+    text-align: center;
+    background-color: #eee;
+    margin-top: 0.5em;
+    cursor: pointer;
+  }
+  #expand-icon i {
+    cursor: pointer;
+    outline: none !important;
+  }
+
+  .form,
+  .todos {
+    width: 100%;
+  }
 }
