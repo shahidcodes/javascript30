@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>CSS Shadow Move</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Javascript Rocks!</h1>
+    </div>
+  </body>
+  <script>
+    let walk = 100;
+    const container = document.querySelector(".container");
+    const h1 = container.querySelector("h1");
+
+    container.addEventListener("mousemove", function(e) {
+      const { offsetWidth: width, offsetHeight: height } = container;
+      let { offsetX: x, offsetY: y } = e;
+
+      if (this != e.target) {
+        x = e.offsetX + e.target.offsetLeft;
+        y = e.offsetY + e.target.offsetTop;
+      }
+      const xWalk = Math.round((x / width) * walk - walk / 2);
+      const yWalk = Math.round((y / height) * walk - walk / 2);
+      h1.style.textShadow = `${xWalk}px ${yWalk}px 0 hsl(${xWalk * yWalk -
+        walk / 2}, 100%, 50%)`;
+    });
+  </script>
+</html>
