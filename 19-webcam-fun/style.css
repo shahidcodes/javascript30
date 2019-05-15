@@ -1,8 +1,12 @@
 body, html {
   margin: 0;
   padding: 0;
-  background: linear-gradient(to bottom, #EEE, #FFF);
+  background-image: url("https://picsum.photos/id/87/1080/760");
   min-height: 100%;
+}
+
+* {
+  font-family: 'Indie Flower', cursive;
 }
 
 .container {
@@ -12,6 +16,30 @@ body, html {
   flex-direction: column;
 }
 
+canvas {
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.75);
+}
+
+.controls {
+  background-color: #FFF;
+  padding: 1em;
+  border-radius: 14px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.75);
+}
+
+label {
+  display: inline-block;
+  width: 5em;
+  text-align: right;
+}
+
+input[type="range"] {
+  width: 15em;
+  vertical-align: middle;
+}
+
 button {
-  width: 40%;
+  font-weight: bold;
 }
