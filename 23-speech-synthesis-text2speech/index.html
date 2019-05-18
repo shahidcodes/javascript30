@@ -78,6 +78,7 @@
     msg.text = text.value;
     function populateVoices() {
       let voices = this.getVoices();
+      console.log(voices);
       voiceSelect.innerHTML = voices
         // filter english only
         .filter(voice => voice.lang.includes("en"))
@@ -115,5 +116,11 @@
     buttons.forEach(btn => {
       btn.addEventListener("click", handleClick);
     });
+
+    setTimeout(() => {
+      if (voices.length == 0) {
+        voices = speechSynthesis.getVoices();
+      }
+    }, 1000);
   </script>
 </html>
