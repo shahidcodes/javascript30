@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Text2Speech 🤓</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="main">
+        <div class="header">
+          <h1>
+            Voicify
+          </h1>
+        </div>
+        <div class="controls">
+          <div class="select">
+            <select name="voices">
+              <option value="0">select voice</option>
+            </select>
+          </div>
+          <div class="range">
+            <label for="rate">Rate</label>
+            <input
+              class="slider"
+              type="range"
+              name="rate"
+              min="0.1"
+              value="1"
+              max="10"
+              step="0.1"
+            />
+          </div>
+          <div class="range">
+            <label for="pitch">Pitch</label>
+            <input
+              class="slider"
+              type="range"
+              name="pitch"
+              value="1"
+              min="0"
+              max="2"
+              step="0.1"
+            />
+          </div>
+        </div>
+        <div class="input">
+          <textarea name="text" cols="30" rows="10"> </textarea>
+          <div class="buttons">
+            <button data-start="false">Stop</button>
+            <button data-start="true">Start</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const msg = new SpeechSynthesisUtterance();
+    let voices = [];
+    const voiceSelect = document.querySelector("[name='voices']");
+    const text = document.querySelector("[name='text']");
+    text.value = "Javascript is love.";
+    msg.text = text.value;
+    function populateVoices() {
+      let voices = this.getVoices();
+      voiceSelect.innerHTML = voices
+        // filter english only
+        .filter(voice => voice.lang.includes("en"))
+        .map(voice => {
+          return `<option value="${voice.name}">${voice.name} (${
+            voice.lang
+          })</option>`;
+        })
+        .join("");
+    }
+    speechSynthesis.addEventListener("voiceschanged", populateVoices);
+    function setVoice() {
+      msg.voice = voices.find(voice => voice.name === this.value);
+      speak();
+    }
+    function speak(cancel = false) {
+      if (cancel) speechSynthesis.cancel();
+      speechSynthesis.speak(msg);
+    }
+    function setOptions() {
+      msg[this.name] = this.value;
+      speak();
+    }
+    const ranges = document.querySelectorAll("input[type='range'");
+    ranges.forEach(range => range.addEventListener("change", setOptions));
+    voiceSelect.addEventListener("change", setVoice);
+
+    function handleClick() {
+      let start = this.dataset.start === "true";
+      if (start) speechSynthesis.speak(msg);
+      else speechSynthesis.cancel();
+    }
+
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach(btn => {
+      btn.addEventListener("click", handleClick);
+    });
+  </script>
+</html>
