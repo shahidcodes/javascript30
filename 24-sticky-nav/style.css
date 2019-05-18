@@ -42,28 +42,27 @@ nav {
   z-index: 1;
 }
 
-nav ul {
-  list-style-type: none;
-  background: var(--nav-bg);
-  color: #FFF;
-  margin: 0;
-}
-
-nav li {
-  display: inline-block;
-  width: 10%;
-  padding: 1em;
-  text-align: center;
-  cursor: pointer;
-  margin: 0;
-  transition: all 0.2s;
-}
-
 .sticky nav {
   position: fixed;
   top: 0;
   width: 100%;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+nav ul {
+  list-style-type: none;
+  background: var(--nav-bg);
+  color: #FFF;
+  margin: 0;
+  display: flex;
+}
+
+nav li {
+  padding: 1em;
+  text-align: center;
+  cursor: pointer;
+  margin: 0;
+  transition: all 0.2s;
 }
 
 #logo {
@@ -109,6 +108,6 @@ section {
     display: none;
   }
   nav li:nth-child(4) {
-    display: none
+    /* display: none */
   }
 }
