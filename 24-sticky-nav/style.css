@@ -1,0 +1,114 @@
+:root {
+  --heading-color: #FFF;
+  --nav-bg: #1D84B5;
+}
+
+* {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  margin: 0px;
+  background-image: url("https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&dl=luca-bravo-217276-unsplash.jpg");
+  background-size: cover;
+  height: 500px;
+  width: 100%;
+  position: relative;
+}
+
+.devDetails {
+  position: absolute;
+  bottom: 0;
+  color: var(--heading-color);
+  padding: 3em;
+}
+
+header span#devName {
+  font-size: 3em;
+}
+
+#devDesc {
+  display: block;
+  width: 100%;
+  padding: 1em;
+}
+
+nav {
+  z-index: 1;
+}
+
+nav ul {
+  list-style-type: none;
+  background: var(--nav-bg);
+  color: #FFF;
+  margin: 0;
+}
+
+nav li {
+  display: inline-block;
+  width: 10%;
+  padding: 1em;
+  text-align: center;
+  cursor: pointer;
+  margin: 0;
+  transition: all 0.2s;
+}
+
+.sticky nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+#logo {
+  transform: translateX(-250px);
+  background: white;
+  color: black;
+  transition: all 0.2s;
+}
+
+.sticky li#logo {
+  transform: translateX(0px);
+}
+
+nav li:hover {
+  background-color: #53A2BE;
+}
+
+.common-padding {
+  margin: 0;
+  padding: 3em;
+  padding-top: 1em;
+}
+
+section h1 {
+  font-size: 2em;
+}
+
+section p {
+  font-size: 1.2em;
+}
+
+section {
+  transform: scale(0.98);
+  transition: transform 0.5s;
+}
+
+.sticky section {
+  transform: scale(1);
+}
+
+@media only screen and (max-width: 600px) {
+  #logo {
+    display: none;
+  }
+  nav li:nth-child(4) {
+    display: none
+  }
+}
