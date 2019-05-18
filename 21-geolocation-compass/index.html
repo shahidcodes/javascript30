@@ -93,12 +93,56 @@
     </h1>
   </body>
   <script>
+    function debounce(func, wait = 10, immediate = true) {
+      var timeout;
+      return function() {
+        var context = this,
+          args = arguments;
+        var later = function() {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+      };
+    }
     const arrow = document.querySelector(".arrow");
     const speedValue = document.querySelector(".speed-value");
 
-    navigator.geolocation.watchPosition(pos => {
-      arrow.style.transform = `rotate(${pos.coords.heading}deg)`;
-      speedValue.textContent = pos.coords.speed || 0;
-    });
+    navigator.geolocation.watchPosition(
+      pos => {
+        arrow.style.transform = `rotate(${pos.coords.heading}deg)`;
+        speedValue.textContent = pos.coords.speed || 0;
+      },
+      err => {
+        alert("You gotta allow that!");
+      }
+    );
+
+    function handleOrientation(e) {
+      console.log(e);
+      let alpha;
+      if (e.absolute) {
+        alpha = e.alpha;
+      } else if ("webkitCompassHeading" in e) {
+        alpha = 360 - event.webkitCompassHeading;
+      } else {
+        alpha = 10;
+      }
+      arrow.style.transform = `rotate(${alpha}deg)`;
+    }
+
+    if ("ondeviceorientationabsolute" in window) {
+      // Chrome 50+ specific
+      window.addEventListener(
+        "deviceorientationabsolute",
+        debounce(handleOrientation)
+      );
+    } else if ("ondeviceorientation" in window) {
+      // for iOS
+      window.addEventListener("deviceorientation", debounce(handleOrientation));
+    }
   </script>
 </html>
