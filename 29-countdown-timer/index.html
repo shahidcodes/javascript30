@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Countdown Timer</title>
+    <style>
+      html {
+        background: linear-gradient(
+          90deg,
+          #42a5f5 0%,
+          #478ed1 50%,
+          #0d47a1 100%
+        );
+      }
+
+      body {
+        margin: 0;
+      }
+      .timer-control {
+        display: flex;
+        width: 100%;
+        background: #347fc4;
+        justify-content: center;
+        box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
+      }
+      .timer-control > * {
+        flex: 1;
+      }
+      .timer-btn {
+        padding: 1.4em;
+        border: none;
+        background-color: #347fc4;
+        color: white;
+        text-transform: capitalize;
+        cursor: pointer;
+        outline: 0;
+      }
+      .timer-btn:hover {
+        background-color: #6ba1d4;
+      }
+      .customForm input {
+        padding: 0.8em;
+        border: none;
+        outline: 0;
+        font-size: 1.25em;
+      }
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 90vh;
+      }
+      section {
+        text-align: center;
+      }
+      section div:nth-child(1) {
+        font-size: 5em;
+        color: white;
+        text-shadow: 1px 1px 0px 5px rgba(0, 0, 0, 0.5);
+      }
+      section div:nth-child(2) {
+        font-size: 3em;
+        color: white;
+        text-shadow: 1px 1px 0px 5px rgba(0, 0, 0, 0.5);
+      }
+      .progress {
+        position: absolute;
+        width: 100%;
+      }
+      .fill {
+        margin-top: 0.4em;
+        height: 90vh;
+        width: 0px;
+        background-color: rgba(0, 0, 0, 0.1);
+        box-shadow: 5px 0px 4px 0px rgba(0, 0, 0, 0.5);
+        transition: all 0.3s;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="timer-control">
+      <button class="timer-btn" data-time="20">20 SECS</button>
+      <button class="timer-btn" data-time="300">WORK 5</button>
+      <button class="timer-btn" data-time="900">QUICK 15</button>
+      <button class="timer-btn" data-time="1200">SNACK 20</button>
+      <button class="timer-btn" data-time="1800">LUNCH BREAK</button>
+      <form class="customForm">
+        <input type="number" name="minutes" placeholder="minutes" />
+      </form>
+    </nav>
+    <main>
+      <div class="progress">
+        <div class="fill"></div>
+      </div>
+      <section>
+        <div class="time">10:29</div>
+        <div class="remainingTime">11:00</div>
+      </section>
+    </main>
+  </body>
+  <script>
+    const timeText = document.querySelector(".time");
+    const remainingTime = document.querySelector(".remainingTime");
+    const fill = document.querySelector(".fill");
+    let interval;
+    function toMinutes(seconds) {
+      let minutes = Math.floor(seconds / 60);
+      let rSeconds = seconds - minutes * 60;
+      return { minutes, seconds: rSeconds };
+    }
+    function prefixZero(value) {
+      return value < 10 ? `0${value}` : value;
+    }
+    function setTimeText(timeSeconds) {
+      let { minutes, seconds } = toMinutes(timeSeconds);
+      timeText.textContent = `${prefixZero(minutes)}:${prefixZero(seconds)}`;
+    }
+    function setRemainingTime(timeSeconds) {
+      let now = Date.now();
+      let then = now + timeSeconds * 1000;
+      let futureTime = new Date(then);
+      let hour = futureTime.getHours();
+      hour = hour > 12 ? hour - 12 : hour;
+      remainingTime.textContent = `
+        Be back at ${prefixZero(hour)}:${prefixZero(futureTime.getMinutes())}
+      `;
+    }
+    function setWidth(total, remaining) {
+      let width = ((total - remaining) / total) * 100;
+      fill.style.width = `${width}%`;
+    }
+    function timer(timeSeconds) {
+      clearInterval(interval);
+      let nS = timeSeconds;
+      setTimeText(timeSeconds);
+      setRemainingTime(nS);
+      setWidth(100, 100);
+      interval = setInterval(function() {
+        if (nS < 0) {
+          clearInterval(interval);
+          return;
+        }
+        setTimeText(nS);
+        setWidth(timeSeconds, nS);
+        nS--;
+      }, 1000);
+    }
+    const btns = document.querySelectorAll("[data-time]");
+    function handleClick(e) {
+      const time = parseInt(this.dataset.time);
+      timer(time);
+    }
+    btns.forEach(btn => {
+      btn.addEventListener("click", handleClick);
+    });
+
+    const form = document.querySelector(".customForm");
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      let minutes = parseInt(this.minutes.value);
+      timer(minutes * 60);
+      this.reset();
+    });
+  </script>
+</html>
