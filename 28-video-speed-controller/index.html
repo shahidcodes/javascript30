@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Video Speed Controller</title>
+    <style>
+      body {
+        margin: 0;
+        background: #4c4c4c url("https://unsplash.it/1500/900?image=1021");
+        background-size: cover;
+        font-family: sans-serif;
+      }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .speed {
+        height: 68%;
+        margin: 10px;
+        background-color: aliceblue;
+        border-radius: 50px;
+        width: 70px;
+        overflow: hidden;
+        border: 2px solid azure;
+      }
+      .speed-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+        color: white;
+        text-align: center;
+        width: 100%;
+        height: 16.3%;
+        padding-bottom: 4px;
+        background: linear-gradient(-170deg, #2376ae 0%, #c16ecf 100%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <video
+        width="765"
+        height="430"
+        src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"
+        loop
+        controls
+      ></video>
+      <div class="speed">
+        <div class="speed-bar">1x</div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const speed = document.querySelector(".speed");
+    const video = document.querySelector("video");
+    const speedBar = document.querySelector(".speed-bar");
+
+    speed.addEventListener("mousemove", function(e) {
+      let x = e.pageY - this.offsetTop;
+      let percent = x / this.offsetHeight;
+      console.log(percent);
+      let height = Math.floor(percent * 100) + "%";
+      speedBar.style.height = height;
+      let min = 0.5;
+      let max = 5;
+      let playbackRate = percent * (max - min) + min;
+      speedBar.textContent = playbackRate.toFixed(2) + "x";
+      video.playbackRate = playbackRate;
+    });
+  </script>
+</html>
