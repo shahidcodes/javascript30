@@ -1,0 +1,23 @@
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+.hscroll {
+  width: 90%;
+  overflow-x: hidden;
+  white-space: nowrap;
+  margin-top: 5vh;
+  margin-left: 2em;
+  border: 1px solid black;
+}
+
+.items {
+  display: inline-block;
+  width: 200px;
+  height: 90vh;
+  text-align: center;
+  line-height: 7;
+  font-size: 5em;
+  background-color: #eee
+}
