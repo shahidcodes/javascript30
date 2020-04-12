@@ -1,0 +1,18 @@
+body {
+  background-color: #a87e3a;
+}
+
+.container {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
+
+#keyEl {
+  font-family: sans-serif;
+  color: white;
+  font-size: 10em;
+  text-transform: capitalize;
+}
